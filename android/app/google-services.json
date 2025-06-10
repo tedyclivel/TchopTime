@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "45040559711",
+    "project_id": "choptime-fc06b",
+    "storage_bucket": "choptime-fc06b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:45040559711:android:a85f60f4c0015949fa1dea",
+        "android_client_info": {
+          "package_name": "com.choptime"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYRut0BEI-quqxUC_dTOnD5miU50SLwQ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

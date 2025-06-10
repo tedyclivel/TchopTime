@@ -1,6 +1,13 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+apply plugin: "com.google.gms.google-services"
+// La ligne 'apply plugin: "com.android.application"' est en double, on en retire une.
+// apply plugin: "com.android.application"
+
+project.ext.react = [
+    enableHermes: true
+]
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -113,7 +120,44 @@ dependencies {
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
-    } else {
-        implementation jscFlavor
+    }
+    
+    // Modules natifs
+    implementation project(':react-native-image-picker')
+    implementation project(':react-native-image-resizer')
+    implementation project(':react-native-netinfo')
+    implementation project(':@react-native-async-storage_async-storage')
+    
+    // JavaScript engine
+    implementation jscFlavor
+    implementation(platform("com.google.firebase:firebase-bom:33.14.0"))
+    implementation 'com.google.firebase:firebase-analytics' // Exemple, ajoutez d'autres modules Firebase nécessaires
+
+    // CORRECTION ICI: Ne PAS utiliser 'force = true' directement sur la ligne d'implémentation
+    implementation 'androidx.core:core:1.13.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1' // Ajoutez cette ligne si elle n'est pas déjà là
+
+    // Il faut exclure le module support-compat s'il est inclus par une autre librairie
+    // Par exemple, si react-native-push-notification l'inclut
+    // Assurez-vous de remplacer YOUR_VERSION par la version exacte de votre package.json
+    implementation project(':react-native-push-notification')
+    implementation 'com.facebook.fresco:fresco:2.6.0'
+    implementation 'com.facebook.fresco:animated-gif:2.6.0'
+    implementation 'com.facebook.fresco:animated-webp:2.6.0'
+    implementation 'com.facebook.fresco:webpsupport:2.6.0'
+
+    // Ce bloc de résolution est l'endroit CORRECT pour utiliser 'force'
+    configurations.all {
+        resolutionStrategy {
+            // Forcer cette version pour core afin d'éviter les doublons avec d'anciennes versions de support
+            force 'androidx.core:core:1.13.1'
+            // Forcer d'autres dépendances AndroidX si des conflits apparaissent
+            force 'androidx.appcompat:appcompat:1.6.1' // Forcer appcompat aussi
+            // force 'com.google.android.gms:play-services-base:18.2.0' // Si vous avez des problèmes avec Play Services
+             force 'com.facebook.fresco:fresco:2.6.0'
+            force 'com.facebook.fresco:animated-gif:2.6.0'
+            force 'com.facebook.fresco:animated-webp:2.6.0'
+            force 'com.facebook.fresco:webpsupport:2.6.0'
+        }
     }
 }

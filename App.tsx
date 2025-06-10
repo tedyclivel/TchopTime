@@ -1,131 +1,127 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+// src/App.tsx
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { Provider as ReduxProvider } from 'react-redux';
+import store from './src/redux/store';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { RootStackParamList } from './src/navigation/types';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+// Importez vos fournisseurs de contexte
+import { AuthProvider } from './src/contexts/AuthContext';
+import { ShoppingListProvider } from './src/contexts/ShoppingListContext';
+import { PreferencesProvider } from './src/contexts/PreferencesContext';
+import { AllergiesPreferencesProvider } from './src/contexts/AllergiesPreferencesContext';
+import { PriceComparisonProvider } from './src/contexts/PriceComparisonContext';
+import { ImageRecognitionProvider } from './src/contexts/ImageRecognitionContext';
+import { RecipeRecommendationProvider } from './src/contexts/RecipeRecommendationContext';
+import { ReviewProvider } from './src/contexts/ReviewContext';
+import { OfflineSyncProvider } from './src/contexts/OfflineSyncContext';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+// Importez tous vos composants d'écran
+import SplashScreen from './src/screens/SplashScreen';
+import HomeScreen from './src/screens/HomeScreen';
+import LoginScreen from './src/screens/LoginScreen';
+import SignUpScreen from './src/screens/SignUpScreen';
+import { ForgotPasswordScreen } from './src/screens/ForgotPasswordScreen';
+import Dashboard from './src/screens/Dashboard';
+import RecipeList from './src/screens/RecipeList';
+import RecipeDetail from './src/screens/RecipeDetail';
+import ShoppingList from './src/screens/ShoppingList';
+import ProfileScreen from './src/screens/ProfileScreen';
+import MarketList from './src/screens/MarketList';
+import MarketDetail from './src/screens/MarketDetail';
+import VoiceRecognition from './src/screens/VoiceRecognition';
+import MealPlanner from './src/screens/MealPlanner';
+import IngredientPriceCompare from './src/screens/IngredientPriceCompare';
+import RecipeShare from './src/screens/RecipeShare';
+import RecipeRatings from './src/screens/RecipeRatings';
+import OfflineMode from './src/screens/OfflineMode'; // Original OfflineMode component
+import VideoTutorial from './src/screens/VideoTutorial';
+import Preferences from './src/screens/Preferences';
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+// Nouveaux imports d'écrans pour les nouveaux contextes
+import AllergiesPreferencesScreen from './src/screens/AllergiesPreferencesScreen';
+import PriceComparisonScreen from './src/screens/PriceComparisonScreen';
+import ImageRecognitionScreen from './src/screens/ImageRecognitionScreen';
+import RecipeRecommendationScreen from './src/screens/RecipeRecommendationScreen'; // Assurez-vous d'avoir ce composant
+import RecipeReviewScreen from './src/screens/RecipeReviewScreen'; // Assurez-vous d'avoir ce composant
+import OfflineModeScreen from './src/screens/OfflineModeScreen'; // Assurez-vous d'avoir ce composant si différent de OfflineMode
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+const App: React.FC = () => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <ReduxProvider store={store}>
+      {/* Ordre des fournisseurs de contexte : du plus générique au plus spécifique si dépendances */}
+      <AuthProvider>
+        <PreferencesProvider>
+          <ShoppingListProvider>
+            <AllergiesPreferencesProvider>
+              <PriceComparisonProvider>
+                <ImageRecognitionProvider>
+                  <RecipeRecommendationProvider>
+                    <ReviewProvider>
+                      <OfflineSyncProvider>
+                        <NavigationContainer>
+                          <Stack.Navigator
+                            initialRouteName="SplashScreen"
+                            screenOptions={{
+                              headerShown: false,
+                              animation: 'slide_from_right' // Animation globale par défaut
+                            }}
+                          >
+                            {/* Écrans d'authentification */}
+                            <Stack.Screen
+                              name="SplashScreen"
+                              component={SplashScreen}
+                              options={{
+                                animation: 'fade' // Animation spécifique pour le SplashScreen
+                              }}
+                            />
+                            <Stack.Screen name="Home" component={HomeScreen} />
+                            <Stack.Screen name="Login" component={LoginScreen} />
+                            <Stack.Screen name="SignUp" component={SignUpScreen} />
+                            <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+
+                            {/* Écrans de l'application principale */}
+                            <Stack.Screen name="Dashboard" component={Dashboard} />
+                            <Stack.Screen name="MealPlanner" component={MealPlanner} />
+                            <Stack.Screen name="RecipeList" component={RecipeList} />
+                            <Stack.Screen name="RecipeDetail" component={RecipeDetail} />
+                            <Stack.Screen name="RecipeShare" component={RecipeShare} />
+                            <Stack.Screen name="RecipeRatings" component={RecipeRatings} />
+                            <Stack.Screen name="Preferences" component={Preferences} />
+                            <Stack.Screen name="Profile" component={ProfileScreen} />
+                            <Stack.Screen name="MarketList" component={MarketList} />
+                            <Stack.Screen name="MarketDetail" component={MarketDetail} />
+                            <Stack.Screen name="ShoppingList" component={ShoppingList} />
+                            <Stack.Screen name="IngredientPriceCompare" component={IngredientPriceCompare} />
+                            <Stack.Screen name="VoiceRecognition" component={VoiceRecognition} />
+                            <Stack.Screen name="VideoTutorial" component={VideoTutorial} />
+
+                            {/* Nouveaux écrans liés aux contextes ajoutés */}
+                            <Stack.Screen name="AllergiesPreferences" component={AllergiesPreferencesScreen} />
+                            <Stack.Screen name="PriceComparison" component={PriceComparisonScreen} />
+                            <Stack.Screen name="ImageRecognition" component={ImageRecognitionScreen} />
+                            <Stack.Screen name="RecipeRecommendation" component={RecipeRecommendationScreen} />
+                            <Stack.Screen name="RecipeReview" component={RecipeReviewScreen} />
+                            <Stack.Screen name="OfflineMode" component={OfflineMode} /> {/* Using original OfflineMode name */}
+                            {/* If you have both OfflineMode and OfflineModeScreen, choose one or rename in types.ts */}
+
+                          </Stack.Navigator>
+                        </NavigationContainer>
+                      </OfflineSyncProvider>
+                    </ReviewProvider>
+                  </RecipeRecommendationProvider>
+                </ImageRecognitionProvider>
+              </PriceComparisonProvider>
+            </AllergiesPreferencesProvider>
+          </ShoppingListProvider>
+        </PreferencesProvider>
+      </AuthProvider>
+    </ReduxProvider>
   );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the recommendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
-  const safePadding = '5%';
-
-  return (
-    <View style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        style={backgroundStyle}>
-        <View style={{paddingRight: safePadding}}>
-          <Header/>
-        </View>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            paddingHorizontal: safePadding,
-            paddingBottom: safePadding,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+};
 
 export default App;
