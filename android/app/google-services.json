@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "398508980550",
+    "project_id": "tchoptime-93e08",
+    "storage_bucket": "tchoptime-93e08.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398508980550:android:fff9550ce4e1ca6d08cd47",
+        "android_client_info": {
+          "package_name": "com.tchoptime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "398508980550-dec7ccocq76shkco5bjqh2fr9frrbpbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5V8NxcMnHWX-9Ww-k7ayy3WRa6RBPk1U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "398508980550-dec7ccocq76shkco5bjqh2fr9frrbpbu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
